@@ -505,7 +505,8 @@ class Options:
         self.pipe = None
         self.port = '2002'
         self.server = 'localhost'
-        self.showlist = False
+        self.sheetname = None
+	self.showlist = False
         self.stdout = False
         self.template = None
         self.timeout = 6
@@ -513,10 +514,10 @@ class Options:
 
         ### Get options from the commandline
         try:
-            opts, args = getopt.getopt (args, 'c:Dd:e:f:hi:Llo:np:s:T:t:v',
+		opts, args = getopt.getopt (args, 'c:Dd:e:f:hi:Llo:np:s:S:T:t:v',
                 ['connection=', 'debug', 'doctype=', 'export', 'format=',
                  'help', 'import', 'listener', 'no-launch', 'output=',
-                 'outputpath', 'password=', 'pipe=', 'port=', 'server=',
+                 'outputpath', 'password=', 'pipe=', 'port=', 'server=', 'sheet=',
                  'timeout=', 'show', 'stdout', 'template', 'verbose',
                  'version'] )
         except getopt.error, exc:
@@ -572,7 +573,9 @@ class Options:
                 self.port = arg
             elif opt in ['-s', '--server']:
                 self.server = arg
-            elif opt in ['--show']:
+            elif opt in ['-S', '--sheet']:
+                self.sheetname = arg
+	    elif opt in ['--show']:
                 self.showlist = True
             elif opt in ['--stdout']:
                 self.stdout = True
@@ -809,6 +812,10 @@ class Convertor:
             if not document:
                 raise UnoException("The document '%s' could not be opened." % inputurl, None)
 
+            if op.sheetname:
+                sheets = document.getSheets()
+		sheets.moveByName(op.sheetname, 0)
+		
             ### Import style template
             phase = "import-style"
             if op.template:

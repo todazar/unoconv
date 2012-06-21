@@ -9,6 +9,13 @@ non-interactive conversion of documents.
 _For practical reasons we mention LibreOffice, but OpenOffice is supported by
 unoconv as well._
 
+This fork allows you to select a sheet from a spreadsheet by name. Usage:
+
+    unoconv -f csv --sheet='sheet-name' somefile.xls
+
+Credit for the sheet-selecting functionality goes to zonaj <https://github.com/zonaj>.
+I've merely applied the changes to the latest githup unoconv.
+
 == Installing unoconv
 unoconv can be installed using packages coming from your distribution, or
 simply by copying the unoconv python script to your system.
